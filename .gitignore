@@ -1,7 +1,7 @@
 # Ignore SQL dump files
-*.sql
-*.sql.gz
-*.sql.xz
+# *.sql
+# *.sql.gz
+# *.sql.xz
 
 # Ignore database configuration files
 *.env
