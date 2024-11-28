@@ -1,0 +1,55 @@
+# Ignore SQL dump files
+*.sql
+*.sql.gz
+*.sql.xz
+
+# Ignore database configuration files
+*.env
+config/database.yml
+config/database.json
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Ignore log files
+*.log
+logs/
+log/
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore Python cache files (if applicable)
+pycache/
+*.py[cod]
+
+# Ignore Node.js modules (if applicable)
+node_modules/
+
+# Ignore compiled files (Java, C#, etc.)
+*.class
+*.dll
+*.exe
+
+# Ignore backup files
+*~
+*.orig
+
+# Ignore coverage reports (if applicable)
+coverage/
+*.cover
+
+# Ignore environment-specific files
+.env.local
+.env.development
+.env.test
+
+# Ignore other sensitive or unnecessary files
+.DS_Store  # Mac OS metadata files
+Thumbs.db  # Windows thumbnail cache
