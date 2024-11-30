@@ -9,11 +9,15 @@ CREATE TABLE authors(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_authors ON TABLE authors(name);
+
 
 CREATE TABLE genres(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
 );
+CREATE INDEX idx_genre ON geners(name);
+
 
 CREATE TABLE books(
     id SERIAL PRIMARY KEY,
@@ -26,6 +30,10 @@ CREATE TABLE books(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_book_title ON books(title);
+CREATE INDEX idx_book_isbn ON book(isbn);
+CREATE INDEX idx_book_language ON book(language);
+
 
 CREATE TABLE books_genres(
     book_id INT REFERENCES books(id) ON DELETE CASCADE,
@@ -37,13 +45,19 @@ CREATE TABLE members(
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone_number VARCHAR(15) UNIQUE CHECK (phone_number ~ '^\(?(9|8|7|6)\)?([0-9]{8}))$'),
-    addres TEXT,
+    address TEXT,
     membership_type VARCHAR(60) CHECK (membership_type IN ('Basic', 'Premium', 'VIP', 'Employee')) DEFAULT 'Basic' NOT NULL,
     date_of_birth DATE NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
     join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_member_name ON members(name);
+CREATE INDEX idx_member_email ON members(email);
+CREATE INDEX idx_member_number ON members(phone_number);
+CREATE INDEX idx_member_birthday ON members(date_of_birth);
+CREATE INDEX idx_member_type ON members(membership_type);
+
 
 CREATE TABLE book_loans(
     id SERIAL PRIMARY KEY,
@@ -54,6 +68,10 @@ CREATE TABLE book_loans(
     return_date TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_loan_date ON book_loans(loan_date);
+CREATE INDEX idx_load_due ON book_loans(due_date);
+CREATE INDEX idx_load_return ON book_loans(return_date);
+
 
 CREATE TABLE reviews(
     id SERIAL PRIMARY KEY,
@@ -65,3 +83,6 @@ CREATE TABLE reviews(
     review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_review_rating ON reviews(rating);
+CREATE INDEX idx_review_comment ON reviews(comment);
+CREATE INDEX idx_review_date ON reviews(review_date);
