@@ -59,7 +59,7 @@ CREATE INDEX idx_user_birthday ON users(date_of_birth);
 CREATE INDEX idx_user_type ON users(usership_type);
 
 
-CREATE UNLOGGED TABLE book_loans(
+CREATE UNLOGGED TABLE loans(
     id SERIAL PRIMARY KEY,
     book_id INT REFERENCES books(id) ON DELETE CASCADE,
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
@@ -68,9 +68,9 @@ CREATE UNLOGGED TABLE book_loans(
     return_date TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_loan_date ON book_loans(loan_date);
-CREATE INDEX idx_load_due ON book_loans(due_date);
-CREATE INDEX idx_load_return ON book_loans(return_date);
+CREATE INDEX idx_loan_date ON loans(loan_date);
+CREATE INDEX idx_load_due ON loans(due_date);
+CREATE INDEX idx_load_return ON loans(return_date);
 
 
 CREATE UNLOGGED TABLE reviews(
