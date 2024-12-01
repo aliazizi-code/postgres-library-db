@@ -9,21 +9,21 @@ CREATE TABLE authors(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_authors ON TABLE authors(name);
+CREATE INDEX idx_authors ON authors(name);
 
 
 CREATE TABLE genres(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
 );
-CREATE INDEX idx_genre ON geners(name);
+CREATE INDEX idx_genre ON genres(name);
 
 
 CREATE TABLE books(
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     published_year DATE NOT NULL,
-    copies_availabe INT DEFAULT 0,
+    copies_available INT DEFAULT 0,
     isbn VARCHAR(20) CHECK (length(isbn) <= 20 ),
     language VARCHAR(60),
     is_published BOOLEAN DEFAULT TRUE,
@@ -31,8 +31,8 @@ CREATE TABLE books(
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_book_title ON books(title);
-CREATE INDEX idx_book_isbn ON book(isbn);
-CREATE INDEX idx_book_language ON book(language);
+CREATE INDEX idx_book_isbn ON books(isbn);
+CREATE INDEX idx_book_language ON books(language);
 
 
 CREATE TABLE books_genres(
