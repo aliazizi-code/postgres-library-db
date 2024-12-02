@@ -1,39 +1,36 @@
 CREATE OR REPLACE FUNCTION get_user_statistics()
 RETURNS TABLE (total_users INT, active_users INT, inactive_users INT)
+LANGUAGE plpgsql
 AS $$
 BEGIN
+    RETURN QUERY
     SELECT
         COUNT (*) AS total_users,
         COUNT (CASE WHEN is_active THEN 1 END) AS active_users,
         COUNT (CASE WHEN NOT is_active THEN 1 END) AS inactive_users
-    INTO total_users, active_users, inactive_users
     FROM users;
-
-    RETURN;
 END;
 $$;
-LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION get_book_loans_summary()
 RETURNS TABLE (total_loans INT, returned_loans INT, pending_loans INT)
+LANGUAGE plpgsql
 AS $$
 BEGIN
+    RETURN QUERY
     SELECT
-        COUNT * AS total_loans;
+        COUNT (*) AS total_loans,
         COUNT (CASE WHEN return_date IS NOT NULL THEN 1 END) AS returned_loans,
-        COUNT (CASE WHEN pending_loans IS NULL THEN 1 END) AS pending_loans;
-    INTO total_loans, returned_loans, pending_loans
+        COUNT (CASE WHEN pending_loans IS NULL THEN 1 END) AS pending_loans
     FROM loans;
-
-    RETURN;
 END;
 $$;
-LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION get_top_rated_books(limit INT)
+CREATE OR REPLACE FUNCTION get_top_rated_books(limit_value INT)
 RETURNS TABLE (book_id INT, average_rating FLOAT)
+LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
@@ -42,14 +39,14 @@ BEGIN
     WHERE  is_published = TRUE 
     GROUP BY book_id
     ORDER BY average_rating 
-    LIMIT limit;
+    LIMIT limit_value;
 END;
 $$;
-LANGUAGE plpgsql
 
 
 CREATE OR REPLACE FUNCTION get_active_user_with_loans()
 RETURNS TABLE(user_id INT, user_name TEXT, book_id INT)
+LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
@@ -66,22 +63,22 @@ BEGIN
         u.is_active = TRUE AND l.return_date IS NULL;
 END;
 $$;
-LANGUAGE plpgsql
 
 
 CREATE OR REPLACE FUNCTION update_book_availability()
 RETURNS TRIGGER
+LANGUAGE plpgsql
 AS $$
 BEGIN
-    UPDATE books SET copies_available (
+    UPDATE books
+    SET copies_available = (
         SELECT COUNT(*) FROM loans WHERE book_id = books.id AND return_date IS NULL
     )
-    WHERE id IN (
-        SELECT DISTINCT book_id FROM loans
-    );
+    WHERE id = NEW.book_id;
+    
+    RETURN NEW;
 END;
 $$;
-LANGUAGE plpgsql
 
 CREATE OR REPLACE TRIGGER after_loan_insert
 AFTER INSERT ON loans
@@ -97,7 +94,8 @@ EXECUTE FUNCTION update_book_availability();
 
 CREATE OR REPLACE FUNCTION get_genre_distribution()
 RETURNS TABLE (genre_name VARCHAR, genre_count INT, genre_ratio FLOAT)
-AS &&
+LANGUAGE plpgsql
+AS $$
 BEGIN
     RETURN QUERY
 
@@ -115,13 +113,13 @@ BEGIN
         genre_count DESC;
 
 END;
-&&;
-LANGUAGE plpgsql
+$$;
 
 
 
 CREATE OR REPLACE FUNCTION loan_book(user_id INT, book_id INT, due_date TIMESTAMP)
 RETURNS VOID
+LANGUAGE plpgsql
 AS $$
 BEGIN
     IF (SELECT copies_available FROM books WHERE id = book_id) > 0 THEN
@@ -132,11 +130,11 @@ BEGIN
     END IF;
 END;
 $$;
-LANGUAGE plpgsql
 
 
 CREATE OR REPLACE FUNCTION calculate_age_authors(birth_date DATE)
 RETURNS TABLE (name VARCHAR, date_of_birth DATE, date_of_death DATE, age_death INT, nationality VARCHAR)
+LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
@@ -151,8 +149,6 @@ BEGIN
             ), 0
         ) AS age_death,
         nationality
-    INTO name, date_of_birth, date_of_death, age_death, nationality
     FROM authors;
 END;
 $$;
-LANGUAGE plpgsql
