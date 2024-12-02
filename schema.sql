@@ -6,8 +6,7 @@ CREATE TABLE authors(
     bio TEXT,
     nationality VARCHAR(100),
     is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_authors ON authors(name);
 
@@ -27,8 +26,7 @@ CREATE TABLE books(
     isbn VARCHAR(20) CHECK (length(isbn) <= 20 ),
     language VARCHAR(60),
     is_published BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_book_title ON books(title);
 CREATE INDEX idx_book_isbn ON books(isbn);
@@ -49,8 +47,7 @@ CREATE TABLE users(
     usership_type VARCHAR(60) CHECK (usership_type IN ('Basic', 'Premium', 'VIP', 'Employee')) DEFAULT 'Basic' NOT NULL,
     date_of_birth DATE NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
-    join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_user_name ON users(name);
 CREATE INDEX idx_user_email ON users(email);
@@ -65,8 +62,7 @@ CREATE UNLOGGED TABLE loans(
     user_id INT REFERENCES users(id) ON DELETE CASCADE,
     loan_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     due_date TIMESTAMP NOT NULL,
-    return_date TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    return_date TIMESTAMP
 );
 CREATE INDEX idx_loan_date ON loans(loan_date);
 CREATE INDEX idx_load_due ON loans(due_date);
@@ -80,8 +76,7 @@ CREATE UNLOGGED TABLE reviews(
     rating INT CHECK (rating >= 1 AND rating <= 10) NOT NULL,
     comment TEXT NOT NULL,
     is_published BOOLEAN DEFAULT FALSE,
-    review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_review_rating ON reviews(rating);
 CREATE INDEX idx_review_comment ON reviews(comment);
