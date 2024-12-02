@@ -13,7 +13,7 @@ CREATE INDEX idx_authors ON authors(name);
 
 CREATE TABLE genres(
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
 );
 CREATE INDEX idx_genre ON genres(name);
 
