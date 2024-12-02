@@ -20,6 +20,7 @@ CREATE INDEX idx_genre ON genres(name);
 
 CREATE TABLE books(
     id SERIAL PRIMARY KEY,
+    author_id INT REFERENCES authors(id) ON DELETE CASCADE,
     title VARCHAR(255) NOT NULL,
     published_year DATE NOT NULL,
     copies_available INT DEFAULT 0,
